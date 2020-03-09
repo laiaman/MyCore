@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "twitter-bootstrap@4.4.1",
+      "destination": "wwwroot/twitter-bootstrap/"
+    }
+
+    // ,{ "provider": "unpkg",
+    //  "library": "abp-web-resources@5.2.0",
+    //  "destination": "wwwroot/lib/"
+    //}
+  ]
+}
