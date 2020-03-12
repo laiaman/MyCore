@@ -30,3 +30,4 @@ D:\amon\Project\FirstCore\WebApplication1\obj\Debug\netcoreapp2.2\Razor\Views\Sh
 D:\amon\Project\FirstCore\WebApplication1\obj\Debug\netcoreapp2.2\Razor\Views\_ViewStart.cshtml.g.cs
 D:\amon\Project\FirstCore\WebApplication1\obj\Debug\netcoreapp2.2\Razor\Views\_ViewImports.cshtml.g.cs
 D:\amon\Project\FirstCore\WebApplication1\bin\Debug\netcoreapp2.2\libman.json
+D:\amon\Project\FirstCore\WebApplication1\obj\Debug\netcoreapp2.2\Razor\Views\Home\Create.cshtml.g.cs

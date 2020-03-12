@@ -16,9 +16,7 @@ namespace WebApplication1.Controllers
         {
             _studentRepository = studentRepository;
         }
-        [Route("")]
-        [Route("Home")]
-        [Route("Home/Index")]
+
         public IActionResult Index()
         {
             IEnumerable<Student> students = _studentRepository.GetAllStudents();
@@ -26,8 +24,8 @@ namespace WebApplication1.Controllers
             return View(students);
          
         }
-        [Route("Home/Details/{id?}")]
-        public IActionResult Details(int? id)
+
+        public ViewResult Details(int? id)
         {
 
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
@@ -39,5 +37,21 @@ namespace WebApplication1.Controllers
            return View(homeDetailsViewModel);
 
         }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }    
+        [HttpPost]
+        public IActionResult Create(Student stu)
+        {
+            if (ModelState.IsValid)
+            {
+                 _studentRepository.add(stu);
+                return RedirectToAction("Details", new { id = stu.Id });
+            }
+            return View();
+        }
+
     }
 }

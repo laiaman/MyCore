@@ -9,5 +9,6 @@ namespace WebApplication1.Models
     {
         Student GetStudent(int id);
         IEnumerable<Student> GetAllStudents();
+        Student add(Student student);
     }
 }

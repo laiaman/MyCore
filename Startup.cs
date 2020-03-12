@@ -40,21 +40,21 @@ namespace WebApplication1
                 app.UseDeveloperExceptionPage();
             }
             app.UseStaticFiles();
-            app.UseMvc();
-            //app.UseMvc(routes =>
-            //{
-            //    routes.MapRoute("default", "{controller=home}/{action=index}/{id?}");
-            //});
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+            //app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute("default", "{controller=home}/{action=index}/{id?}");
+            });
+
+
+
+
+
+
+
+
+
+
             //app.Run(async (context) =>//终端型中间键
             //{
             //    //var processName = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
