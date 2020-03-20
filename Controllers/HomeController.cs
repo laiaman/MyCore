@@ -48,7 +48,7 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                  _studentRepository.add(stu);
-                return RedirectToAction("Details", new { id = stu.Id });
+              //  return RedirectToAction("Details", new { id = stu.Id });
             }
             return View();
         }
