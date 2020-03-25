@@ -22,6 +22,8 @@ namespace WebApplication1.Models
         [Required]
         public string  Email { get; set; }
 
+        public string PhotoPath { get; set; }
+
 
     }
 }
