@@ -21,7 +21,7 @@ namespace WebApplication1.ViewModels
         [Required]
         public string Email { get; set; }
         [Display(Name ="图片")]
-        public IFormFile Photo { get; set; }
+        public List<IFormFile> Photos { get; set; }
 
     }
 }

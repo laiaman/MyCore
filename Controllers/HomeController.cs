@@ -55,12 +55,18 @@ namespace WebApplication1.Controllers
                 //        _studentRepository.add(stu);
                 //  return RedirectToAction("Details", new { id = stu.Id });
                 string uniqueFileName = null;
-                if (stu.Photo!=null)
+                if (stu.Photos!=null&&stu.Photos.Count>0)
                 {
-                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + stu.Photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    stu.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    foreach (var photo in stu.Photos)
+                    {
+
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+
+
 
                 }
                 Student newStu = new Student
