@@ -81,5 +81,64 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ViewResult Edit(int id)
+        {
+
+            Student student = _studentRepository.GetStudent(id);
+            if (student!=null)
+            {
+                StudentEditViewModel studentEditViewModel = new StudentEditViewModel
+                {
+                    Id = student.Id,
+                    Name = student.Name,
+                    Email = student.Email,
+                    ClassName = student.ClassName,
+                    ExistingPhotoPath = student.PhotoPath
+                };
+                return View(studentEditViewModel);
+            }
+            throw new Exception("null id");
+        }
+        [HttpPost]
+        public IActionResult Edit(StudentEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Student stu = _studentRepository.GetStudent(model.Id);
+
+                if (model.Photos.Count>0)
+                {
+                    if (model.ExistingPhotoPath!=null)
+                    {
+                        string filePath = Path.Combine(hostingEnvironment.WebRootPath, "images", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+
+                    }
+                    string uniqueFileName = null;
+                    if (model.Photos != null && model.Photos.Count > 0)
+                    {
+                        foreach (var photo in model.Photos)
+                        {
+
+                            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                            uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                            photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                        }
+
+                        stu.PhotoPath = uniqueFileName;
+
+                    }
+
+
+                }
+                Student updatestu = _studentRepository.Update(stu);
+                return RedirectToAction("Index");
+
+            }
+            return View();
+        }
+
     }
 }
