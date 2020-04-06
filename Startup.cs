@@ -43,6 +43,12 @@ namespace WebApplication1
                 //developerExceptionPageOptions.SourceCodeLineCount = 5;
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                //app.UseStatusCodePagesWithRedirects("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            }
             app.UseStaticFiles();
             //app.UseMvc();
             app.UseMvc(routes =>

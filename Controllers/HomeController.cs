@@ -30,12 +30,17 @@ namespace WebApplication1.Controllers
          
         }
 
-        public ViewResult Details(int? id)
+        public ViewResult Details(int id)
         {
-
+            Student student = _studentRepository.GetStudent(id);
+            if (student == null)
+            {
+                Response.StatusCode = 404;
+                return View("StudentNotFound", id);
+            }
             HomeDetailsViewModel homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Student = _studentRepository.GetStudent(id??1),
+                Student =student,
                 Title = "详细信息"
             };
 
@@ -54,31 +59,43 @@ namespace WebApplication1.Controllers
             {
                 //        _studentRepository.add(stu);
                 //  return RedirectToAction("Details", new { id = stu.Id });
-                string uniqueFileName = null;
-                if (stu.Photos!=null&&stu.Photos.Count>0)
-                {
-                    foreach (var photo in stu.Photos)
-                    {
-
-                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                        uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    }
 
 
-
-                }
                 Student newStu = new Student
                 {
                     Name = stu.Name,
                     Email = stu.Email,
                     ClassName = stu.ClassName,
-                    PhotoPath = uniqueFileName
+                    PhotoPath = ProcessUploadFile(stu)
                 };
                 _studentRepository.add(newStu);
             }
             return View();
+        }
+
+        private string ProcessUploadFile(StudentCreateViewModel stu)
+        {
+            string uniqueFileName = null;
+            if ( stu.Photos.Count > 0)
+            {
+                foreach (var photo in stu.Photos)
+                {
+
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream= new FileStream(filePath, FileMode.Create))
+                    {
+                        photo.CopyTo(fileStream);
+                    }
+                    
+                }
+
+
+
+            }
+
+            return uniqueFileName;
         }
 
         [HttpGet]
@@ -106,7 +123,9 @@ namespace WebApplication1.Controllers
             if (ModelState.IsValid)
             {
                 Student stu = _studentRepository.GetStudent(model.Id);
-
+                stu.Name = model.Name;
+                stu.Email = model.Email;
+                stu.ClassName = model.ClassName;
                 if (model.Photos.Count>0)
                 {
                     if (model.ExistingPhotoPath!=null)
@@ -115,21 +134,7 @@ namespace WebApplication1.Controllers
                         System.IO.File.Delete(filePath);
 
                     }
-                    string uniqueFileName = null;
-                    if (model.Photos != null && model.Photos.Count > 0)
-                    {
-                        foreach (var photo in model.Photos)
-                        {
-
-                            string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
-                            uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-                            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                            photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                        }
-
-                        stu.PhotoPath = uniqueFileName;
-
-                    }
+                    stu.PhotoPath = ProcessUploadFile(model);
 
 
                 }
