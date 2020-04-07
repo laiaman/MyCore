@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using WebApplication1.Models;
 using WebApplication1.ViewModels;
 
@@ -14,12 +15,13 @@ namespace WebApplication1.Controllers
     {
         private readonly IStudentRepository _studentRepository;
         private readonly HostingEnvironment hostingEnvironment;
+        private readonly ILogger logger;
 
-        public HomeController(IStudentRepository studentRepository,HostingEnvironment hostingEnvironment)
+        public HomeController(IStudentRepository studentRepository,HostingEnvironment hostingEnvironment,ILogger<HomeController> logger)
         {
             _studentRepository = studentRepository;
             this.hostingEnvironment = hostingEnvironment;
-
+            this.logger = logger;
         }
 
         public IActionResult Index()
@@ -32,6 +34,8 @@ namespace WebApplication1.Controllers
 
         public ViewResult Details(int id)
         {
+            logger.LogInformation("info");
+            logger.LogDebug("debug");
             Student student = _studentRepository.GetStudent(id);
             if (student == null)
             {
